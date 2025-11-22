@@ -93,9 +93,9 @@ export default function LoginPage() {
             </CardDescription>
           </div>
         </CardHeader>
-        
+
         <CardContent className="space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-5" noValidate method="post">
+          <form onSubmit={handleSubmit} className="space-y-5" method="post">
             {error && formData.username && formData.password && (
               <Alert variant="destructive" className="animate-in slide-in-from-top-2">
                 <AlertDescription className="text-red-600">{error}</AlertDescription>
@@ -109,11 +109,10 @@ export default function LoginPage() {
                 <Button
                   type="button"
                   variant={formData.userType === 'admin' ? 'default' : 'outline'}
-                  className={`h-12 transition-all duration-200 ${
-                    formData.userType === 'admin' 
-                      ? 'bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/30' 
-                      : 'hover:border-primary/50'
-                  }`}
+                  className={`h-12 transition-all duration-200 ${formData.userType === 'admin'
+                    ? 'bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/30'
+                    : 'hover:border-primary/50'
+                    }`}
                   onClick={() => handleInputChange('userType', 'admin')}
                   disabled={loading}
                 >
@@ -123,11 +122,10 @@ export default function LoginPage() {
                 <Button
                   type="button"
                   variant={formData.userType === 'employee' ? 'default' : 'outline'}
-                  className={`h-12 transition-all duration-200 ${
-                    formData.userType === 'employee' 
-                      ? 'bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/30' 
-                      : 'hover:border-primary/50'
-                  }`}
+                  className={`h-12 transition-all duration-200 ${formData.userType === 'employee'
+                    ? 'bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/30'
+                    : 'hover:border-primary/50'
+                    }`}
                   onClick={() => handleInputChange('userType', 'employee')}
                   disabled={loading}
                 >
@@ -152,6 +150,7 @@ export default function LoginPage() {
                   required
                   disabled={loading}
                   autoComplete="username"
+
                   className="pl-10 h-11 border-muted-foreground/20 focus:border-primary transition-colors"
                 />
               </div>
@@ -192,11 +191,10 @@ export default function LoginPage() {
             </div>
 
             {/* Submit Button */}
-            <Button 
-              type="button" 
-              className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg shadow-primary/30 transition-all duration-200 font-semibold text-base" 
+            <Button
+              type="submit"
+              className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg shadow-primary/30 transition-all duration-200 font-semibold text-base"
               disabled={loading}
-              onClick={handleSubmit}
             >
               {loading ? (
                 <div className="flex items-center gap-2">

@@ -4,9 +4,9 @@
   "/page": "app/page.js",
   "/admin/dashboard/page": "app/admin/dashboard/page.js",
   "/admin/expenses/page": "app/admin/expenses/page.js",
-  "/employer/dashboard/page": "app/employer/dashboard/page.js",
   "/admin/report/page": "app/admin/report/page.js",
   "/admin/employers/page": "app/admin/employers/page.js",
-  "/admin/stock/page": "app/admin/stock/page.js",
-  "/admin/sales/page": "app/admin/sales/page.js"
+  "/employer/dashboard/page": "app/employer/dashboard/page.js",
+  "/admin/sales/page": "app/admin/sales/page.js",
+  "/admin/stock/page": "app/admin/stock/page.js"
 }
