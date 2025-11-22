@@ -8,7 +8,6 @@ import {
   FileText,
   Settings,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/admin/dashboard" },

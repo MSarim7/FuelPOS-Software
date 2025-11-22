@@ -26,9 +26,18 @@ export default function LoginPage() {
       e.preventDefault();
       e.stopPropagation();
     }
-    
     setLoading(true);
     setError('');
+
+    // Validate credentials before simulating API call
+    if (
+      formData.username !== 'admin' ||
+      formData.password !== '123456'
+    ) {
+      setError('Invalid credentials');
+      setLoading(false);
+      return;
+    }
 
     try {
       // Simulate API call
@@ -41,8 +50,12 @@ export default function LoginPage() {
         toast.success('Welcome, employee!');
         router.push('/employee/dashboard');
       }
-    } catch (err: any) {
-      setError(err?.message || 'Invalid username or password');
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'message' in err) {
+        setError((err as { message?: string }).message || 'Invalid username or password');
+      } else {
+        setError('Invalid username or password');
+      }
     } finally {
       setLoading(false);
     }
@@ -83,9 +96,9 @@ export default function LoginPage() {
         
         <CardContent className="space-y-6">
           <form onSubmit={handleSubmit} className="space-y-5" noValidate method="post">
-            {error && (
+            {error && formData.username && formData.password && (
               <Alert variant="destructive" className="animate-in slide-in-from-top-2">
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription className="text-red-600">{error}</AlertDescription>
               </Alert>
             )}
 

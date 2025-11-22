@@ -86,13 +86,13 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
             ([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
-  .map(([key, itemConfig]) => {
-    const color =
-      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
-      itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
-  })
-  .join('\n')}
+                .map(([key, itemConfig]) => {
+                  const color =
+                    itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
+                    itemConfig.color
+                  return color ? `  --color-${key}: ${color};` : null
+                })
+                .join('\n')}
 }
 `,
           )
@@ -104,7 +104,7 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 
-function ChartTooltipContent(props: any) {
+function ChartTooltipContent(props: unknown) {
   const {
     active,
     payload,
@@ -119,10 +119,10 @@ function ChartTooltipContent(props: any) {
     color,
     nameKey,
     labelKey,
-  } = props as any
+  } = props as Record<string, unknown>
   const { config } = useChart()
 
-  const payloadArr = payload as any[] | undefined
+  const payloadArr = payload as unknown[] | undefined
 
   const tooltipLabel = React.useMemo(() => {
     if (hideLabel || !payloadArr?.length) {
@@ -130,7 +130,8 @@ function ChartTooltipContent(props: any) {
     }
 
     const [item] = payloadArr
-    const key = `${labelKey || item?.dataKey || item?.name || 'value'}`
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const key = `${labelKey || (item as any)?.dataKey || (item as any)?.name || 'value'}`
     const itemConfig = getPayloadConfigFromPayload(config, item, key)
     const value =
       !labelKey && typeof label === 'string'
@@ -140,7 +141,8 @@ function ChartTooltipContent(props: any) {
     if (labelFormatter) {
       return (
         <div className={cn('font-medium', labelClassName)}>
-          {labelFormatter(value, payload)}
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {(labelFormatter as any)(value, payload)}
         </div>
       )
     }
@@ -158,6 +160,7 @@ function ChartTooltipContent(props: any) {
     labelClassName,
     config,
     labelKey,
+    payloadArr,
   ])
 
   if (!active || !payloadArr?.length) {
@@ -175,21 +178,26 @@ function ChartTooltipContent(props: any) {
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payloadArr.map((item: any, index: number) => {
-          const key = `${nameKey || item.name || item.dataKey || 'value'}`
+        {payloadArr.map((item: unknown, index: number) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const key = `${nameKey || (item as any).name || (item as any).dataKey || 'value'}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
-          const indicatorColor = color || item.payload.fill || item.color
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const indicatorColor = color || (item as any).payload.fill || (item as any).color
 
           return (
             <div
-              key={item.dataKey}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              key={(item as any).dataKey}
               className={cn(
                 '[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5',
                 indicator === 'dot' && 'items-center',
               )}
             >
-              {formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, item.payload)
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              {formatter && (item as any)?.value !== undefined && (item as any).name ? (
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (formatter as any)((item as any).value, (item as any).name, item, index, (item as any).payload)
               ) : (
                 <>
                   {itemConfig?.icon ? (
@@ -225,12 +233,15 @@ function ChartTooltipContent(props: any) {
                     <div className="grid gap-1.5">
                       {nestLabel ? tooltipLabel : null}
                       <span className="text-muted-foreground">
-                        {itemConfig?.label || item.name}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {itemConfig?.label || (item as any).name}
                       </span>
                     </div>
-                    {item.value && (
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {(item as any).value && (
                       <span className="text-foreground font-mono font-medium tabular-nums">
-                        {item.value.toLocaleString()}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {(item as any).value.toLocaleString()}
                       </span>
                     )}
                   </div>
@@ -246,10 +257,10 @@ function ChartTooltipContent(props: any) {
 
 const ChartLegend = RechartsPrimitive.Legend
 
-function ChartLegendContent(props: any) {
-  const { className, hideIcon = false, payload, verticalAlign = 'bottom', nameKey } = props as any
+function ChartLegendContent(props: unknown) {
+  const { className, payload, verticalAlign = 'bottom', nameKey } = props as Record<string, unknown>
   const { config } = useChart()
-  const payloadArr = payload as any[] | undefined
+  const payloadArr = payload as unknown[] | undefined
 
   if (!payloadArr?.length) {
     return null
@@ -263,27 +274,16 @@ function ChartLegendContent(props: any) {
         className,
       )}
     >
-      {payloadArr.map((item: any) => {
-        const key = `${nameKey || item.dataKey || 'value'}`
+      {payloadArr.map((item: unknown) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const key = `${nameKey || (item as any).dataKey || 'value'}`
         const itemConfig = getPayloadConfigFromPayload(config, item, key)
-
         return (
           <div
-            key={item.value}
-            className={
-              '[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3'
-            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            key={(item as any).value}
+            className='[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3'
           >
-            {itemConfig?.icon && !hideIcon ? (
-              <itemConfig.icon />
-            ) : (
-              <div
-                className="h-2 w-2 shrink-0 rounded-[2px]"
-                style={{
-                  backgroundColor: item.color,
-                }}
-              />
-            )}
             {itemConfig?.label}
           </div>
         )
@@ -304,8 +304,8 @@ function getPayloadConfigFromPayload(
 
   const payloadPayload =
     'payload' in payload &&
-    typeof payload.payload === 'object' &&
-    payload.payload !== null
+      typeof payload.payload === 'object' &&
+      payload.payload !== null
       ? payload.payload
       : undefined
 

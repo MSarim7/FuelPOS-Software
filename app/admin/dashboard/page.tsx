@@ -18,7 +18,7 @@ export default function Dashboard() {
         <Card className="flex flex-col items-center justify-center p-4 rounded-xl border border-muted shadow-sm">
           <CardHeader className="flex items-center gap-2">
             <DollarSign className="text-primary text-2xl" />
-            <CardTitle>Today's Revenue</CardTitle>
+            <CardTitle>Today&apos;s Revenue</CardTitle>
           </CardHeader>
           <CardContent>
             <span className="text-2xl font-bold">₹45,230</span>
